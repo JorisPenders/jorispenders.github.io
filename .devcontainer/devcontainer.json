@@ -1,5 +1,5 @@
 {
-  "image": "mcr.microsoft.com/vscode/devcontainers/python",
+  "image": "mcr.microsoft.com/vscode/devcontainers/ruby",
   "hostRequirements": {
     "cpus": 4
   },
