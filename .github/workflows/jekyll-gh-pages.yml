@@ -49,3 +49,22 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+      - name: Send deployment notification email
+        if: always()
+        uses: dawidd6/action-send-mail@v3
+        with:
+          # SMTP server details must be stored in repository secrets
+          server_address: ${{ secrets.SMTP_SERVER }}
+          server_port: ${{ secrets.SMTP_PORT }}
+          username: ${{ secrets.SMTP_USERNAME }}
+          password: ${{ secrets.SMTP_PASSWORD }}
+          # Email content
+          subject: "GitHub Pages deployed for ${{ github.repository }}"
+          body: |
+            The Pages site for ${{ github.repository }} was deployed by ${{ github.actor }}.
+            URL: ${{ steps.deployment.outputs.page_url }}
+          # Recipient and sender (store recipient in a secret like NOTIFY_EMAIL)
+          to: ${{ secrets.NOTIFY_EMAIL }}
+          from: ${{ secrets.SMTP_FROM }}
+          # Use TLS/SSL (set to true for SMTPS, false for plain SMTP)
+          secure: true
